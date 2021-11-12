@@ -1,0 +1,25 @@
+source-bash ~/.shrc
+
+$COMPLETIONS_DISPLAY = 'readline'
+$CASE_SENSITIVE_COMPLETIONS = True
+
+$PROMPT='{env_name}{BOLD_GREEN}{user}@{hostname}{BOLD_BLUE} {cwd_base} {BOLD_BLUE}{prompt_end}{NO_COLOR} '
+$TITLE=''
+
+$XONSH_SHOW_TRACEBACK = False
+
+
+xontrib load vox
+
+xontrib load autovox
+
+@events.autovox_policy
+def dotvenv_policy(path, **_):
+    venv = path / '.venv'
+    if venv.exists():
+        return venv
+
+xontrib load z
+
+xontrib load direnv
+

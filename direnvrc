@@ -1,0 +1,19 @@
+
+layout_python-venv() {
+    if [[ -z "$NODIRENV" ]]; then
+
+        python=$1 && shift
+
+        if [[ ! -e .venv ]]; then
+            "$python" -m venv .venv "$@"
+            .venv/bin/pip install --upgrade pip
+        fi
+
+        env | grep -q XONSH_VERSION || source .venv/bin/activate
+        unset PS1
+
+        export PYTEST_ADDOPTS='-p no:randomly'
+
+    fi
+}
+
