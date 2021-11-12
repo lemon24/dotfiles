@@ -37,9 +37,7 @@ eval "$(zoxide init zsh)"
 # END zoxide
 
 
-# PS1='$(show_virtual_env)%n@%m %1~ %(#.#.$) '
 PS1='$(show_virtual_env)%1~ %(#.#.$) '
 
 
-# exec ~/homebrew/bin/xonsh
-
+test -e ~/.zshrc.local && source ~/.zshrc.local

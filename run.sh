@@ -19,7 +19,6 @@ readonly ROOT=$( pwd )
 function install {
     install-sh
     install-zsh 
-    install-xonsh 
     install-direnv 
     install-kate
 }

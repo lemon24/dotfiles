@@ -1,3 +1,4 @@
-alias kate=/Applications/kate.app/Contents/MacOS/kate
-alias firefox=/Applications/Firefox.app/Contents/MacOS/firefox
+test -e /Applications/kate.app && alias kate=/Applications/kate.app/Contents/MacOS/kate
+test -e /Applications/Firefox.app && alias firefox=/Applications/Firefox.app/Contents/MacOS/firefox
 
+test -e ~/.shrc.local && source ~/.shrc.local
