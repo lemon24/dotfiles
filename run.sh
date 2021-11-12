@@ -20,7 +20,6 @@ function install {
     install-sh
     install-zsh 
     install-direnv 
-    install-kate
 }
 
 function install-sh {
