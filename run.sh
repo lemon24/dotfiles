@@ -54,8 +54,27 @@ function install-kate {
     mkdir -p "$AS/katepart5"
     rm -rf "$AS/katepart5/syntax"
     ln -s $ROOT/kate/syntax "$AS/katepart5/syntax"
+    
+    rm -f "$PS/katemoderc"
+    ln -s $ROOT/kate/katemoderc "$PS/katemoderc"
 
+    # set default [Kate Plugins], no need to sync
+    mv "$AS/kate/anonymous.katesession" "$AS/kate/anonymous.katesession.old" || true
+    $ROOT/kate/rc.py merge \
+        $ROOT/kate/anonymous.katesession \
+        "$AS/kate/anonymous.katesession.old" \
+    > "$AS/kate/anonymous.katesession"
+
+    # sync by dump-kate
+    mv "$PS/katerc" "$PS/katerc.old" || true
+    $ROOT/kate/rc.py merge "$PS/katerc.old" $ROOT/kate/katerc > "$PS/katerc"
+    
 }
+
+function dump-kate {
+    $ROOT/kate/rc.py dump "$PS/katerc" > $ROOT/kate/katerc
+}
+
 
 
 "$@"
