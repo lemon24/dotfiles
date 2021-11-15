@@ -15,6 +15,7 @@ function show_virtual_env {
     fi
 }
 
+setopt prompt_subst
 PS1='$(show_virtual_env)%1~ %(#.#.$) '
 
 
@@ -33,7 +34,6 @@ fi
 # BEGIN direnv
 if type direnv &>/dev/null; then
     eval "$(direnv hook zsh)"
-    setopt PROMPT_SUBST
 fi
 # END direnv
 

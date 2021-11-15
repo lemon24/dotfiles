@@ -38,6 +38,7 @@ function install-xonsh {
 }
 
 function install-direnv {
+    mkdir -p ~/.config/direnv
     rm -f ~/.config/direnv/direnvrc
     ln -s $ROOT/direnvrc ~/.config/direnv/direnvrc
 }
