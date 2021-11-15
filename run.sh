@@ -18,8 +18,8 @@ readonly ROOT=$( pwd )
 
 function install {
     install-sh
-    install-zsh 
-    install-direnv 
+    install-zsh
+    install-direnv
 }
 
 function install-sh {
@@ -49,11 +49,11 @@ readonly PS="$HOME/Library/Preferences"
 function install-kate {
     mkdir -p "$AS/org.kde.syntax-highlighting/themes"
     ln -sf $ROOT/kate/themes/* "$AS/org.kde.syntax-highlighting/themes"
-    
+
     mkdir -p "$AS/katepart5"
     rm -rf "$AS/katepart5/syntax"
     ln -s $ROOT/kate/syntax "$AS/katepart5/syntax"
-    
+
     rm -f "$PS/katemoderc"
     ln -s $ROOT/kate/katemoderc "$PS/katemoderc"
 
@@ -67,13 +67,38 @@ function install-kate {
     # sync by dump-kate
     mv "$PS/katerc" "$PS/katerc.old" || true
     $ROOT/kate/rc.py merge "$PS/katerc.old" $ROOT/kate/katerc > "$PS/katerc"
-    
+
 }
 
 function dump-kate {
     $ROOT/kate/rc.py dump "$PS/katerc" > $ROOT/kate/katerc
 }
 
+function install-display-overrides {
+    # https://forums.macrumors.com/threads/guide-fixing-external-monitor-scaling-and-fuzziness-issues-with-mbp-and-osx.2179968/
+    # https://codeclou.github.io/Display-Override-PropertyList-File-Parser-and-Generator-with-HiDPI-Support-For-Scaled-Resolutions/
+
+    if [[ $(
+        defaults read \
+            /Library/Preferences/com.apple.windowserver.plist \
+            DisplayResolutionEnabled
+    ) != '1' ]]; then
+        sudo defaults write \
+            /Library/Preferences/com.apple.windowserver.plist \
+            DisplayResolutionEnabled \
+            -bool true
+    fi
+
+    for src in $ROOT/display-overrides/*/*; do
+        local dst=/Library/Displays/Contents/Resources/Overrides/$(
+            realpath --relative-to=$ROOT/display-overrides $src
+        )
+        sudo mkdir -p $( dirname $dst )
+        if [[ ! -e $dst ]]; then
+            sudo cp $src $dst
+        fi
+    done
+}
 
 
 "$@"
