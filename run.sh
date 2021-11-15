@@ -78,6 +78,16 @@ function install-display-overrides {
     # https://forums.macrumors.com/threads/guide-fixing-external-monitor-scaling-and-fuzziness-issues-with-mbp-and-osx.2179968/
     # https://codeclou.github.io/Display-Override-PropertyList-File-Parser-and-Generator-with-HiDPI-Support-For-Scaled-Resolutions/
 
+    # for macOS versions newer than Catalina, see https://github.com/waydabber/BetterDummy
+
+    local version=$(
+        sw_vers | awk '/ProductVersion/ { print $2 }' | cut -d. -f-2
+    )
+    if [[ $version != "10.15" ]]; then
+        echo "this only works on Catalina"
+        return
+    fi
+
     if [[ $(
         defaults read \
             /Library/Preferences/com.apple.windowserver.plist \
@@ -93,9 +103,11 @@ function install-display-overrides {
         local dst=/Library/Displays/Contents/Resources/Overrides/$(
             realpath --relative-to=$ROOT/display-overrides $src
         )
-        sudo mkdir -p $( dirname $dst )
         if [[ ! -e $dst ]]; then
+            echo copying $dst
             sudo cp $src $dst
+        else
+            echo have $dst
         fi
     done
 }
